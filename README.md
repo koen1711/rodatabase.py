@@ -23,6 +23,7 @@ await DB.increment_data(datastore="ExampleDatastore", key="ExampleKey", incremen
 await DB.delete_data(datastore="ExampleDatastore", key="ExampleKey")
 ```
 For calling set_data data must be a JSON object.
+```
 All JSON objects:
     String
     Number
@@ -30,3 +31,4 @@ All JSON objects:
     Array
     Boolean
     null
+```
