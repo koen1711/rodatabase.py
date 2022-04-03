@@ -1,3 +1,23 @@
+Metadata-Version: 2.1
+Name: rodatabase.py
+Version: 1.0.3
+Summary: A Roblox Database API wrapper.
+Home-page: https://github.com/koen1711/rodatabase.py
+Author: koen_1711
+License: UNKNOWN
+Project-URL: Discord, https://discord.gg/76kdgMd6h3
+Project-URL: GitHub, https://github.com/koen1711/rodatabase.py
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Framework :: AsyncIO
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # Rodatabase.py
 
 # How to install?
@@ -32,3 +52,4 @@ All JSON objects:
     Boolean
     null
 ```
+
