@@ -4,7 +4,7 @@ from typing import Dict
 from httpx import AsyncClient, Response
 from typing import Optional, List, Dict, Type
 from httpx import Response
-from exceptions import get_exception_from_status_code
+from .exceptions import get_exception_from_status_code
 
 
 _xcsrf_allowed_methods: Dict[str, bool] = {
@@ -70,7 +70,6 @@ class Requests:
         skip_roblox = kwargs.pop("skip_roblox", False)
 
         response = await self.session.request(method, *args, **kwargs)
-
         if skip_roblox:
             return response
 
@@ -96,6 +95,7 @@ class Requests:
                 response=response,
                 errors=errors
             )
+            print(exception)
             raise exception
         else:
             return response
@@ -114,8 +114,6 @@ class Requests:
         Returns:
             An HTTP response.
         """
-        post = await self.request("POST", *args, **kwargs)
-        print(post.json())
         return await self.request("POST", *args, **kwargs)
 
     async def put(self, *args, **kwargs) -> Response:

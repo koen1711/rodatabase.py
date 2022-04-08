@@ -4,7 +4,7 @@ from httpx import Response
 
 class RobloxException(Exception):
     """
-    Base excption.
+    Base exception.
     """
     pass
 
@@ -46,39 +46,14 @@ class HTTPException(RobloxException):
         """
         self.response: Response = response
         self.status: int = response.status_code
-        self.errors: List[ResponseError]
-
-        if errors:
-            self.errors = [
-                ResponseError(data=error_data) for error_data in errors
-            ]
-        else:
-            self.errors = []
-
+        self.errors = [' ', ]
         if self.errors:
-            error_string = self._generate_string()
+            error = response.json()["error"]
+            error_detail = response.json()["errorDetails"][0]
             super().__init__(
-                f"{response.status_code} {response.reason_phrase}: {response.url}.\n\nErrors:\n{error_string}")
+                f"{response.status_code} {response.reason_phrase}: {response.url}.\n\nError: {error}\nError detail: {error_detail}\nResponse JSON:\n{response.json()}")
         else:
             super().__init__(f"{response.status_code} {response.reason_phrase}: {response.url}")
-
-    def _generate_string(self) -> str:
-        parsed_errors = []
-        for error in self.errors:
-            parsed_error = f"\t{error.code}: {error.message}"
-            error_messages = []
-
-            error.user_facing_message and error_messages.append(f"User-facing message: {error.user_facing_message}")
-            error.field and error_messages.append(f"Field: {error.field}")
-            error.retryable and error_messages.append(f"Retryable: {error.retryable}")
-
-            if error_messages:
-                error_message_string = "\n\t\t".join(error_messages)
-                parsed_error += f"\n\t\t{error_message_string}"
-
-            parsed_errors.append(parsed_error)
-
-        return "\n".join(parsed_errors)
 
 
 class BadRequest(HTTPException):

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: rodatabase.py
-Version: 1.0.3
+Version: 1.0.5
 Summary: A Roblox Database API wrapper.
 Home-page: https://github.com/koen1711/rodatabase.py
 Author: koen_1711
@@ -41,6 +41,7 @@ await DB.get_keys(datastore="ExampleDatastore", limit=99)
 await DB.set_data(datastore="ExampleDatastore", key="ExampleKey", data="ExampleData") 
 await DB.increment_data(datastore="ExampleDatastore", key="ExampleKey", incrementby=1)
 await DB.delete_data(datastore="ExampleDatastore", key="ExampleKey")
+await DB.get_data(datastore="ExampleDatastore", key="ExampleKey")
 ```
 For calling set_data data must be a JSON object.
 ```
@@ -52,4 +53,5 @@ All JSON objects:
     Boolean
     null
 ```
+
 

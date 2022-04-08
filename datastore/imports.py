@@ -1,5 +1,5 @@
 from typing import Optional
-from datastorereq import Requests
+from .datastorereq import Requests
 import base64, hashlib, json
 
 class DatabaseClient:
@@ -96,6 +96,20 @@ class DatabaseClient:
         Retuns: JSON Object.
         """
         response = await self.requests.delete(
+            url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry",
+            headers={'x-api-key': self.token},
+            params={'datastoreName': datastore, 'entryKey': key}
+        )
+        return response.json()
+    async def get_data(self, datastore: str, key: str):
+        """
+        Gets the data in the specified datastore entry.
+        Arguments:
+            datastore: The name of the datastore to get the data in.
+            key: The key to get the data under.
+        Retuns: JSON Object.
+        """
+        response = await self.requests.get(
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry",
             headers={'x-api-key': self.token},
             params={'datastoreName': datastore, 'entryKey': key}

@@ -21,6 +21,7 @@ await DB.get_keys(datastore="ExampleDatastore", limit=99)
 await DB.set_data(datastore="ExampleDatastore", key="ExampleKey", data="ExampleData") 
 await DB.increment_data(datastore="ExampleDatastore", key="ExampleKey", incrementby=1)
 await DB.delete_data(datastore="ExampleDatastore", key="ExampleKey")
+await DB.get_data(datastore="ExampleDatastore", key="ExampleKey")
 ```
 For calling set_data data must be a JSON object.
 ```
