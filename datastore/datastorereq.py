@@ -72,7 +72,6 @@ class Requests:
         response = await self.session.request(method, *args, **kwargs)
         if skip_roblox:
             return response
-
         method = method.lower()
         if handle_xcsrf_token and self.xcsrf_token_name in response.headers and _xcsrf_allowed_methods.get(method):
             self.session.headers[self.xcsrf_token_name] = response.headers[self.xcsrf_token_name]
@@ -95,7 +94,6 @@ class Requests:
                 response=response,
                 errors=errors
             )
-            print(exception)
             raise exception
         else:
             return response

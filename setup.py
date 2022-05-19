@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup_info = {
     "name": "rodatabase.py",
-    "version": "1.0.5",
+    "version": "1.1.9",
     "author": "koen_1711",
     "description": "A Roblox Database API wrapper.",
     "long_description": long_description,

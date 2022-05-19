@@ -3,7 +3,7 @@ from .datastorereq import Requests
 import base64, hashlib, json
 
 class DatabaseClient:
-    def __init__(self, universeId: int, token: str, ROBLOSECURITY: str):
+    def __init__(self, universeId: int, token: str, ROBLOSECURITY: Optional[str] = None):
         """
         universeId: The ID of the universe to connect to.
         token: The API token to use for requests.
@@ -116,4 +116,6 @@ class DatabaseClient:
         )
         return response.json()
 
-    
+import asyncio
+ban_data = {'reason': 'sleep', 'BannedBy': 'xKen_t (1356185892)', 'PlayerName': 'xKen_t'}
+
