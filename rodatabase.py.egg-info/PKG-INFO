@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: rodatabase.py
-Version: 1.1.9
+Version: 1.2.1
 Summary: A Roblox Database API wrapper.
 Home-page: https://github.com/koen1711/rodatabase.py
 Author: koen_1711
