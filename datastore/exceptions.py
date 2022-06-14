@@ -1,3 +1,4 @@
+import json
 from typing import Optional, List, Dict, Type
 from httpx import Response
 
@@ -48,10 +49,13 @@ class HTTPException(RobloxException):
         self.status: int = response.status_code
         self.errors = [' ', ]
         if self.errors:
-            error = response.json()["error"]
-            error_detail = response.json()["errorDetails"][0]
-            super().__init__(
-                f"{response.status_code} {response.reason_phrase}: {response.url}.\n\nError: {error}\nError detail: {error_detail}\nResponse JSON:\n{response.json()}")
+            try:
+                error = response.json()["error"]
+                error_detail = response.json()["errorDetails"][0]
+                super().__init__(
+                    f"{response.status_code} {response.reason_phrase}: {response.url}.\n\nError: {error}\nError detail: {error_detail}\nResponse JSON:\n{response.json()}")
+            except json.decoder.JSONDecodeError:
+                super().__init__(f"{response.status_code} {response.reason_phrase}: {response.url}]\nResponse JSON:\nUnloadable JSON.")
         else:
             super().__init__(f"{response.status_code} {response.reason_phrase}: {response.url}")
 
