@@ -1,7 +1,7 @@
 from typing import Optional
-from datastorereq import Requests
+from .datastorereq import Requests
 import base64, hashlib, json
-from Utils.bases import BaseDataStore
+from .Utils.bases import BaseDataStore
 
 class DatabaseClient:
     def __init__(self, universeId: int, token: str, ROBLOSECURITY: str, responsetype: Optional[str] = 'class'):

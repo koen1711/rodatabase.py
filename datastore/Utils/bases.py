@@ -1,5 +1,5 @@
 from typing import Optional
-from datastorereq import Requests
+from ..datastorereq import Requests
 import base64, hashlib, json
 
 
