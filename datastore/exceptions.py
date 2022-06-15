@@ -98,6 +98,10 @@ class InternalServerError(HTTPException):
     """
     pass
 
+class BadGateway(HTTPException):
+    """HTTP exception raised for status code 502."""
+    pass
+
 
 _codes_exceptions: Dict[int, Type[HTTPException]] = {
     400: BadRequest,
@@ -105,7 +109,8 @@ _codes_exceptions: Dict[int, Type[HTTPException]] = {
     403: Forbidden,
     404: NotFound,
     429: TooManyRequests,
-    500: InternalServerError
+    500: InternalServerError,
+    502: BadGateway
 }
 
 
