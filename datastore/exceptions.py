@@ -99,7 +99,9 @@ class InternalServerError(HTTPException):
     pass
 
 class BadGateway(HTTPException):
-    """HTTP exception raised for status code 502."""
+    """HTTP exception raised for status code 502.
+    This means that Roblox servers gave a invbalid response.
+    """
     pass
 
 

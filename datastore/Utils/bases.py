@@ -1,43 +1,24 @@
 from typing import Optional
-from .datastorereq import Requests
+from ..datastorereq import Requests
 import base64, hashlib, json
 
-class DatabaseClient:
-    def __init__(self, universeId: int, token: str, ROBLOSECURITY: Optional[str] = None):
-        """
-        universeId: The ID of the universe to connect to.
-        token: The API token to use for requests.
-        roblosecurity: The .ROBLOSECURITY token to use for authentication.
 
-        Functions: 
-            get_datastores: Returns a list of all datastores in the universe.
-            get_keys: Returns a list of all keys in the specified datastore.
-            set_data: Sets the data in the specified datastore.
-            increment_data: Increments the data in the specified datastore.
-        """
-        self.token = token
+class BaseDataStore:
+    def __init__(self, json, datastore, token, apitoken):
+        self._json = json
+        self.datastore = datastore 
         self.requests: Requests = Requests()
-        self.id = universeId
-        self.set_token(token=ROBLOSECURITY)
+        self.token = apitoken
+        self.set_token(token)
+        pass
     def set_token(self, token: str):
         """
-        Authenticates the client with the passed .ROBLOSECURITY token.
-        This method does not send any requests and will not throw if the token is invalid.
+        Sets the token for the datastore.
         Arguments:
-            token: A .ROBLOSECURITY token to authenticate the client with.
+            token: The token to set.
         """
         self.requests.session.cookies[".ROBLOSECURITY"] = token
-    async def get_datastores(self):
-        """
-        Gets the datastores associated with the game.
-        Returns: JSON Object.
-        """
-        response = await self.requests.get(
-            url=f"https://apis.roblox.com/datastores/v1/{self.id}/standard-datastores",
-            headers={'x-api-key': self.token}
-        )
-        return response.json()
-    async def get_keys(self, datastore: str, limit: Optional[int] = 100):
+    async def get_keys(self, limit: Optional[int] = 100):
         """
         Gets the keys of the given datastore.
         Arguments:
@@ -50,10 +31,10 @@ class DatabaseClient:
         response = await self.requests.get(
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries",
             headers={'x-api-key': self.token},
-            params={'datastoreName': datastore, 'prefix': '', 'limit': limit}
+            params={'datastoreName': self.datastore, 'prefix': '', 'limit': limit}
         )
         return response.json()
-    async def set_data(self, datastore: str, key: str, data):
+    async def set_data(self, key: str, data):
         """
         Sets the data in the specified datastore.
         Arguments:
@@ -68,10 +49,10 @@ class DatabaseClient:
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry",
             headers={'x-api-key': self.token, 'content-md5': sdata},
             json=data,
-            params={'datastoreName': datastore, 'entryKey': key}
+            params={'datastoreName': self.datastore, 'entryKey': key}
         )
         return response.json()
-    async def increment_data(self, datastore: str, key: str, incrementby: int):
+    async def increment_data(self, key: str, incrementby: int):
         """
         Increments the data in the specified datastore.
         Arguments:
@@ -84,10 +65,10 @@ class DatabaseClient:
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry/increment",
             headers={'x-api-key': self.token},
             json={"incrementBy": incrementby},
-            params={'datastoreName': datastore, 'entryKey': key}
+            params={'datastoreName': self.datastore, 'entryKey': key}
         )
         return response.json()
-    async def delete_data(self, datastore: str, key: str):
+    async def delete_data(self, key: str):
         """
         Deletes the data in the specified datastore entry.
         Arguments:
@@ -98,10 +79,10 @@ class DatabaseClient:
         response = await self.requests.delete(
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry",
             headers={'x-api-key': self.token},
-            params={'datastoreName': datastore, 'entryKey': key}
+            params={'datastoreName': self.datastore, 'entryKey': key}
         )
         return response.json()
-    async def get_data(self, datastore: str, key: str):
+    async def get_data(self, key: str):
         """
         Gets the data in the specified datastore entry.
         Arguments:
@@ -112,10 +93,6 @@ class DatabaseClient:
         response = await self.requests.get(
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores/datastore/entries/entry",
             headers={'x-api-key': self.token},
-            params={'datastoreName': datastore, 'entryKey': key}
+            params={'datastoreName': self.datastore, 'entryKey': key}
         )
         return response.json()
-
-import asyncio
-ban_data = {'reason': 'sleep', 'BannedBy': 'xKen_t (1356185892)', 'PlayerName': 'xKen_t'}
-
