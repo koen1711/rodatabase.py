@@ -1,16 +1,18 @@
 from typing import Optional
-from ..datastorereq import Requests
+from datastorereq import Requests
 import base64, hashlib, json
 
 
 class BaseDataStore:
-    def __init__(self, json, datastore, token, apitoken):
+    def __repr__(self) -> str:
+        return f"<BaseDataStore {self.datastore}>"
+    def __init__(self, json, datastore, token, apitoken, id):
         self._json = json
         self.datastore = datastore 
         self.requests: Requests = Requests()
         self.token = apitoken
+        self.id = id
         self.set_token(token)
-        pass
     def set_token(self, token: str):
         """
         Sets the token for the datastore.

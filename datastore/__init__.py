@@ -1,21 +1,22 @@
 from typing import Optional
-from .datastorereq import Requests
+from datastorereq import Requests
 import base64, hashlib, json
-from .Utils.bases import BaseDataStore
+from Utils.bases import BaseDataStore
 
 class DatabaseClient:
-    def __init__(self, universeId: int, token: str, ROBLOSECURITY: Optional[str] = None, responsetype: Optional[str] = 'class'):
+    def __init__(self, universeId: int, token: str, ROBLOSECURITY: str, responsetype: Optional[str] = 'class'):
         """
         universeId: The ID of the universe to connect to.
         token: The API token to use for requests.
         roblosecurity: The .ROBLOSECURITY token to use for authentication.
+        responsetype: The type of response to return. NOTE: Class is slower then json. 'class' | 'json'
 
         Functions: 
             get_datastores: Returns a list of all datastores in the universe.
-            get_keys: Returns a list of all keys in the specified datastore.
-            set_data: Sets the data in the specified datastore.
-            increment_data: Increments the data in the specified datastore.
+            get_datastore: Returns a class or json object of the datastore with the specified name.
         """
+        if not responsetype == 'class' or responsetype == 'json':
+            raise TypeError("Invalid response type.")
         self.token = token
         self.requests: Requests = Requests()
         self.id = universeId
@@ -47,13 +48,22 @@ class DatabaseClient:
         Returns: JSON Object or Class.
         """
         response = await self.requests.get(
-            url=f"https://apis.roblox.com/datastores/v1/{self.id}/standard-datastores/datastore/entries",
+            url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores",
             headers={'x-api-key': self.token},
-            params={'datastoreName': datastore, 'prefix': '', 'limit': 100}
         )
         if self.response == 'class':
-            return BaseDataStore(response.json()[f"{datastore}"], datastore, self.token, self.token)
+            for i in response.json()["datastores"]:
+                try:
+                    data = BaseDataStore(i, datastore, self.token, self.token, self.id)
+                    return data
+                    
+                except:
+                    pass
+        elif self.response == 'json':
+            return response.json()[f"{datastore}"]
         else:
-            return response.json()
+            raise TypeError("Invalid response type.")
+
+
 
 

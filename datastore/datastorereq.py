@@ -4,7 +4,7 @@ from typing import Dict
 from httpx import AsyncClient, Response
 from typing import Optional, List, Dict, Type
 from httpx import Response
-from .exceptions import get_exception_from_status_code
+from exceptions import get_exception_from_status_code
 
 
 _xcsrf_allowed_methods: Dict[str, bool] = {

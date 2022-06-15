@@ -17,11 +17,12 @@ DB = DatabaseClient(universeId=YOUR_ID_HERE, token="YOUR_API_TOKEN_HERE", ROBLOS
 
 ```
 await DB.get_datastores()
-await DB.get_keys(datastore="ExampleDatastore", limit=99)
-await DB.set_data(datastore="ExampleDatastore", key="ExampleKey", data="ExampleData") 
-await DB.increment_data(datastore="ExampleDatastore", key="ExampleKey", incrementby=1)
-await DB.delete_data(datastore="ExampleDatastore", key="ExampleKey")
-await DB.get_data(datastore="ExampleDatastore", key="ExampleKey")
+Datastore = await DB.get_datastore("Test1")
+await Datastore.get_keys(datastore="ExampleDatastore", limit=99)
+await Datastore.set_data(datastore="ExampleDatastore", key="ExampleKey", data="ExampleData") 
+await Datastore.increment_data(datastore="ExampleDatastore", key="ExampleKey", incrementby=1)
+await Datastore.delete_data(datastore="ExampleDatastore", key="ExampleKey")
+await Datastore.get_data(datastore="ExampleDatastore", key="ExampleKey")
 ```
 For calling set_data data must be a JSON object.
 ```
