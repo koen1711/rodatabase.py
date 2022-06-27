@@ -1,6 +1,8 @@
+from calendar import day_abbr
 from typing import Optional
 from .datastorereq import Requests
 import base64, hashlib, json
+from .exceptions import *
 from .Utils.bases import BaseDataStore
 
 class DatabaseClient:
@@ -15,7 +17,7 @@ class DatabaseClient:
             get_datastores: Returns a list of all datastores in the universe.
             get_datastore: Returns a class or json object of the datastore with the specified name.
         """
-        if not responsetype == 'class' or responsetype == 'json':
+        if responsetype != 'class' and responsetype != 'json':
             raise TypeError("Invalid response type.")
         self.token = token
         self.requests: Requests = Requests()
@@ -47,20 +49,28 @@ class DatabaseClient:
             datastore: The name of the datastore to get.
         Returns: JSON Object or Class.
         """
+        
         response = await self.requests.get(
             url=f"https://apis.roblox.com/datastores/v1/universes/{self.id}/standard-datastores",
             headers={'x-api-key': self.token},
         )
+        
         if self.response == 'class':
+            r = 0
             for i in response.json()["datastores"]:
-                try:
-                    data = BaseDataStore(i, datastore, self.token, self.token, self.id)
-                    return data
-                    
-                except:
-                    pass
+                if i['name'] == datastore:
+                    return BaseDataStore(json=i, datastore=i['name'], token=self.token, apitoken=self.token, id=self.id)
+                else:
+                    r += 1
+            return BaseDataStore({}, datastore, token=self.token, apitoken=self.token, id=self.id)
         elif self.response == 'json':
-            return response.json()[f"{datastore}"]
+            for i in response.json():
+                r = 0
+                if i['name'] == datastore:
+                    return i
+                else:
+                    r += 1
+            return {}
         else:
             raise TypeError("Invalid response type.")
 
