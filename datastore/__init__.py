@@ -6,7 +6,7 @@ from .exceptions import *
 from .Utils.bases import BaseDataStore
 
 class DatabaseClient:
-    def __init__(self, universeId: int, token: str, ROBLOSECURITY: str, responsetype: Optional[str] = 'class'):
+    def __init__(self, universeId: int, token: str, responsetype: Optional[str] = 'class'):
         """
         universeId: The ID of the universe to connect to.
         token: The API token to use for requests.
@@ -23,16 +23,8 @@ class DatabaseClient:
         self.requests: Requests = Requests()
         self.id = universeId
         self.response = responsetype
-        self.set_token(token=ROBLOSECURITY)
-    def set_token(self, token: str):
-        """
-        Authenticates the client with the passed .ROBLOSECURITY token.
-        This method does not send any requests and will not throw if the token is invalid.
-        Arguments:
-            token: A .ROBLOSECURITY token to authenticate the client with.
-        """
-        self.requests.session.cookies[".ROBLOSECURITY"] = token
-    async def get_datastores(self):
+
+        async def get_datastores(self):
         """
         Gets the datastores associated with the game.
         Returns: JSON Object.
